@@ -1,0 +1,10 @@
+{"data_source": "sample", "prompt": "什么是Python编程语言？", "ability": "search", "reward_model": "exact_match"}
+{"data_source": "sample", "prompt": "解释什么是机器学习", "ability": "search", "reward_model": "exact_match"}
+{"data_source": "sample", "prompt": "深度学习和机器学习有什么区别？", "ability": "search", "reward_model": "exact_match"}
+{"data_source": "sample", "prompt": "什么是Transformer模型？", "ability": "search", "reward_model": "exact_match"}
+{"data_source": "sample", "prompt": "介绍一下强化学习", "ability": "search", "reward_model": "exact_match"}
+{"data_source": "sample", "prompt": "PyTorch是什么？", "ability": "search", "reward_model": "exact_match"}
+{"data_source": "sample", "prompt": "vLLM的主要特点是什么？", "ability": "search", "reward_model": "exact_match"}
+{"data_source": "sample", "prompt": "Qwen模型系列有哪些版本？", "ability": "search", "reward_model": "exact_match"}
+{"data_source": "sample", "prompt": "什么是检索增强生成（RAG）？", "ability": "search", "reward_model": "exact_match"}
+{"data_source": "sample", "prompt": "自然语言处理的主要应用有哪些？", "ability": "search", "reward_model": "exact_match"}

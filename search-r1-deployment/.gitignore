@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Conda
+conda-meta/
+
+# 模型文件
+models/
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+
+# 检查点
+checkpoints/
+verl_checkpoints/
+
+# 日志
+logs/*.log
+logs/*.pid
+*.log
+
+# 索引文件
+indexes/
+*.index
+*.faiss
+
+# 数据（如果数据很大）
+# data/*.jsonl
+# data/*.parquet
+
+# 缓存
+.cache/
+*.cache
+__pycache__/
+
+# HuggingFace cache
+.huggingface/
+
+# WandB
+wandb/
+
+# 环境变量
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# 临时文件
+*.tmp
+*.temp
+*.bak
+
+# 系统文件
+.DS_Store
+Thumbs.db

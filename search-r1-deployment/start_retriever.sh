@@ -60,12 +60,19 @@ sleep 5
 
 # 测试检索服务器
 echo "测试检索服务器..."
-if curl -s -X POST http://127.0.0.1:8000/retrieve \
-    -H "Content-Type: application/json" \
-    -d '{"query": "test"}' > /dev/null 2>&1; then
-    echo "✓ 检索服务器运行正常"
+# 使用 curl 内置重试机制等待服务就绪
+if curl --silent --fail --retry 10 --retry-delay 1 --retry-connrefused \
+    http://127.0.0.1:8000/health > /dev/null 2>&1; then
+    echo "✓ 检索服务器运行正常 (健康检查通过)"
 else
-    echo "✗ 检索服务器可能未正确启动，请检查日志: logs/retriever.log"
+    echo "⚠ 健康检查端点不可用，尝试检索端点..."
+    if curl -s -X POST http://127.0.0.1:8000/retrieve \
+        -H "Content-Type: application/json" \
+        -d '{"query": "test"}' > /dev/null 2>&1; then
+        echo "✓ 检索服务器运行正常 (检索端点可用)"
+    else
+        echo "✗ 检索服务器可能未正确启动，请检查日志: logs/retriever.log"
+    fi
 fi
 
 echo ""

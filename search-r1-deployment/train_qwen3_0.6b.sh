@@ -8,24 +8,35 @@ echo "Search-R1 训练 - Qwen3-0.6b"
 echo "========================================="
 echo ""
 
-# 配置变量
-export CUDA_VISIBLE_DEVICES=0  # 使用第一个GPU，如果有多个GPU可以设置为 0,1,2,3
-export WANDB_MODE=offline      # 离线模式，避免需要 wandb API key
+# 加载 .env 文件（如果存在）
+ENV_FILE="../.env"
+if [ -f "$ENV_FILE" ]; then
+    echo "加载环境变量从 $ENV_FILE..."
+    set -a  # 自动导出所有变量
+    source "$ENV_FILE"
+    set +a  # 关闭自动导出
+    echo "✓ 环境变量已加载"
+    echo ""
+fi
 
-# 数据路径
-TRAIN_DATA="../data/sample_train.jsonl"
-TEST_DATA="../data/sample_train.jsonl"  # 示例中使用相同数据
+# 配置变量（可通过 .env 文件覆盖）
+export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0}  # 使用第一个GPU，如果有多个GPU可以设置为 0,1,2,3
+export WANDB_MODE=${WANDB_MODE:-offline}      # 离线模式，避免需要 wandb API key
 
-# 模型配置
+# 数据路径（可通过 .env 文件覆盖）
+TRAIN_DATA=${TRAIN_DATA:-"../data/sample_train.jsonl"}
+TEST_DATA=${TEST_DATA:-"../data/sample_train.jsonl"}
+
+# 模型配置（可通过 .env 文件覆盖）
 # 选项 1: 使用 HuggingFace 模型（自动下载）
-export BASE_MODEL='Qwen/Qwen3-0.6B'
+export BASE_MODEL=${BASE_MODEL:-'Qwen/Qwen3-0.6B'}
 
 # 选项 2: 使用本地模型路径（如果已下载）
 # export BASE_MODEL='../models/Qwen3-0.6B'
 
-# 实验名称
-export EXPERIMENT_NAME="search-r1-qwen3-0.6b-demo"
-export WAND_PROJECT='Search-R1-Demo'
+# 实验名称（可通过 .env 文件覆盖）
+export EXPERIMENT_NAME=${EXPERIMENT_NAME:-"search-r1-qwen3-0.6b-demo"}
+export WANDB_PROJECT=${WANDB_PROJECT:-'Search-R1-Demo'}
 
 # 检查检索服务器是否运行
 echo "检查检索服务器..."
@@ -107,7 +118,7 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     trainer.nnodes=1 \
     trainer.save_freq=50 \
     trainer.test_freq=25 \
-    trainer.project_name=$WAND_PROJECT \
+    trainer.project_name=$WANDB_PROJECT \
     trainer.experiment_name=$EXPERIMENT_NAME \
     trainer.total_epochs=5 \
     trainer.total_training_steps=100 \

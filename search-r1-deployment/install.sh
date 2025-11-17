@@ -59,10 +59,11 @@ else
         echo -e "${GREEN}✓ conda 环境 'searchr1' 已创建${NC}"
     fi
 
-    echo "请手动激活 conda 环境："
-    echo "  conda activate searchr1"
-    echo "然后重新运行此脚本。"
-    exit 0
+    # 初始化 conda 并激活环境
+    echo -e "${YELLOW}激活 conda 环境...${NC}"
+    eval "$(conda shell.bash hook)"
+    conda activate searchr1
+    echo -e "${GREEN}✓ conda 环境 'searchr1' 已激活${NC}"
 fi
 
 # 更新 pip
@@ -73,7 +74,28 @@ pip install --upgrade pip
 # 安装 PyTorch
 echo ""
 echo -e "${YELLOW}安装 PyTorch 2.4.0 (CUDA 12.1)...${NC}"
-pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu121
+if pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu121; then
+    echo -e "${GREEN}✓ PyTorch 从官方源安装成功${NC}"
+else
+    echo -e "${YELLOW}官方源安装失败，尝试使用清华镜像源...${NC}"
+    if pip install torch==2.4.0+cu121 -i https://pypi.tuna.tsinghua.edu.cn/simple --extra-index-url https://download.pytorch.org/whl/cu121; then
+        echo -e "${GREEN}✓ PyTorch 从清华镜像安装成功${NC}"
+    else
+        echo -e "${RED}✗ PyTorch 安装失败${NC}"
+        echo "请尝试手动安装："
+        echo "  pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu121"
+        exit 1
+    fi
+fi
+
+# 验证 PyTorch 安装
+echo -e "${YELLOW}验证 PyTorch 安装...${NC}"
+if python3 -c "import torch; print(f'PyTorch {torch.__version__} 安装成功'); print(f'CUDA 可用: {torch.cuda.is_available()}'); print(f'CUDA 版本: {torch.version.cuda if torch.cuda.is_available() else \"N/A\"}')" 2>/dev/null; then
+    echo -e "${GREEN}✓ PyTorch 验证通过${NC}"
+else
+    echo -e "${RED}✗ PyTorch 验证失败${NC}"
+    exit 1
+fi
 
 # 安装 vLLM
 echo ""

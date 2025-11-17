@@ -1,0 +1,23 @@
+# Search-R1 + Qwen3-0.6b 直接依赖
+# 使用 pip-compile 生成 requirements.txt:
+#   pip install pip-tools
+#   pip-compile requirements.in
+
+# 深度学习框架
+torch==2.4.0
+
+# vLLM（包含 vllm-flash-attn==2.6.2）
+vllm==0.6.3
+
+# Transformers
+transformers>=4.40.0
+
+# Web 服务
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+
+# 实验跟踪
+wandb>=0.16.0
+
+# 环境变量管理
+python-dotenv>=1.0.0
